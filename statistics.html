@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statistics</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f4f7ff;
+}
+
+.header {
+    background: linear-gradient(to right, #2563eb, #9ca3af);
+    color: white;
+    padding: 30px;
+}
+
+.back {
+    cursor: pointer;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.container {
+    padding: 40px;
+}
+
+.module-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.progress-bar {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: black;
+    border-radius: 10px;
+    width: 0%;
+}
+
+button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.primary {
+    background: black;
+    color: white;
+}
+
+.secondary {
+    background: #e5e7eb;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="back" onclick="goBack()">← Back to Dashboard</div>
+    <h1>Statistics For Economics</h1>
+    <p>Understanding economy mathematically</p>
+</div>
+
+<div class="container">
+
+    <!-- THEORY -->
+    <div class="module-card">
+        <h3>Theory and Formulae</h3>
+        <p><span id="theoryDone">0</span> / <span id="theoryTotal">30</span> quizzes completed</p>
+
+        <div class="progress-bar">
+            <div id="theoryProgress" class="progress-fill"></div>
+        </div>
+
+        <button class="primary" onclick="openLesson('theory')">Lesson</button>
+        <button id="theoryQuizBtn" class="secondary" onclick="openQuiz('theory')">Attempt Quiz</button>
+    </div>
+
+    <!-- GRAPHS -->
+    <div class="module-card">
+        <h3>Numerical</h3>
+        <p><span id="graphsDone">0</span> / <span id="graphsTotal">30</span> quizzes completed</p>
+
+        <div class="progress-bar">
+            <div id="graphsProgress" class="progress-fill"></div>
+        </div>
+
+        <button class="primary" onclick="openLesson('graphs')">Lesson</button>
+        <button id="graphsQuizBtn" class="secondary" onclick="openQuiz('graphs')">Attempt Quiz</button>
+    </div>
+
+</div>
+
+<script>
+
+const TOTAL = 30;
+
+// GET DATA
+let theoryDone = parseInt(localStorage.getItem("theoryProgress")) || 0;
+let graphsDone = parseInt(localStorage.getItem("graphsProgress")) || 0;
+
+// BUTTON TEXT LOGIC
+function getButtonText(progress) {
+    if (progress === 0) return "Attempt Quiz";
+    if (progress > 0 && progress < TOTAL) return "Continue Quiz";
+    if (progress === TOTAL) return "Reattempt Quiz";
+}
+
+// UPDATE UI
+function updateUI() {
+    document.getElementById("theoryDone").innerText = theoryDone;
+    document.getElementById("graphsDone").innerText = graphsDone;
+
+    document.getElementById("theoryTotal").innerText = TOTAL;
+    document.getElementById("graphsTotal").innerText = TOTAL;
+
+    let theoryPercent = (theoryDone / TOTAL) * 100;
+    let graphsPercent = (graphsDone / TOTAL) * 100;
+
+    document.getElementById("theoryProgress").style.width = theoryPercent + "%";
+    document.getElementById("graphsProgress").style.width = graphsPercent + "%";
+
+    document.getElementById("theoryQuizBtn").innerText = getButtonText(theoryDone);
+    document.getElementById("graphsQuizBtn").innerText = getButtonText(graphsDone);
+}
+
+// 🚀 UPDATED QUIZ NAVIGATION (KEY PART)
+function openQuiz(module) {
+
+    if (module === "theory") {
+
+        if (theoryDone === TOTAL) {
+            localStorage.setItem("theoryProgress", 0);
+            localStorage.removeItem("theoryAnswers");
+
+            // ✅ RESET CORRECT KEY
+            localStorage.setItem("theoryCurrent", 0);
+        }
+
+        window.location.href = "stats-theory-quiz.html";
+    }
+
+    else if (module === "graphs") {
+
+        if (graphsDone === TOTAL) {
+            localStorage.setItem("graphsProgress", 0);
+            localStorage.removeItem("graphsAnswers");
+
+            // ✅ RESET CORRECT KEY
+            localStorage.setItem("graphsCurrent", 0);
+        }
+
+        window.location.href = "stats-num-quiz.html";
+    }
+}
+// NAVIGATION
+function openLesson(module) {
+    if (module === "theory") {
+        window.location.href = "stats-theory-lesson.html";
+    } else {
+        window.location.href = "stats-num-lesson.html";
+    }
+}
+
+function goBack() {
+    window.location.href = "dashboard.html";
+}
+
+// LOAD
+window.onload = updateUI;
+
+</script>
+
+</body>
+</html>
