@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,103 +7,13 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-<style>
-body {
-    font-family: 'Inter', sans-serif;
-    background: #f4f7ff;
-    margin: 0;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* HEADER */
-.top {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.back {
-    cursor: pointer;
-    color: #2563eb;
-}
-
-/* CARD */
-.card {
-    width: 100%;
-    max-width: 600px;
-    perspective: 1000px;
-    margin-bottom: 30px;
-    cursor: pointer;
-}
-
-.card-inner {
-    display: grid;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-}
-
-.card-front,
-.card-back {
-    grid-area: 1 / 1;
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    backface-visibility: hidden;
-}
-
-.card-back {
-    transform: rotateY(180deg);
-    background: #111827;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.card.flip .card-inner {
-    transform: rotateY(180deg);
-}
-
-/* OPTIONS */
-.option {
-    background: #f3f4f6;
-    padding: 10px;
-    border-radius: 8px;
-    margin-top: 10px;
-    cursor: pointer;
-}
-
-/* NAV */
-.nav {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    justify-content: space-between;
-}
-
-button {
-    padding: 10px 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.prev { background: #e5e7eb; }
-.next { background: #6b7280; color: white; }
-</style>
+<link rel="stylesheet" href="micro-theory-quiz.css">
 </head>
 
 <body>
 
 <div class="top">
-    <div class="back" onclick="goBack()">← Back</div>
+    <div class="back" onclick="goBack()">â† Back</div>
     <div id="progress">Question 1/10</div>
 </div>
 
@@ -124,64 +34,85 @@ button {
 
 <script>
 const questions = [
-        {q:"Budget constraint shows:",options:["Production level","Affordable combinations of goods","Inflation","Labor supply"],ans:"Affordable combinations of goods"},
-        {q:"Budget line slope depends on:",options:["Income only","Prices of goods","Taxes","Exports"],ans:"Prices of goods"},
-        {q:"Income increase shifts budget line:",options:["Inward","Outward","Downward","No change"],ans:"Outward"},
-        {q:"Preferences describe:",options:["Government policy","Consumer tastes","Exports","Production"],ans:"Consumer tastes"},
-        {q:"Indifference curves show:",options:["Equal utility","Equal income","Equal prices","Equal production"],ans:"Equal utility"},
-        {q:"Indifference curves are generally:",options:["Upward sloping","Downward sloping","Vertical","Horizontal"],ans:"Downward sloping"},
-        {q:"MRS stands for:",options:["Marginal Rate of Substitution","Marginal Revenue System","Money Rate System","Market Revenue Schedule"],ans:"Marginal Rate of Substitution"},
-        {q:"Utility means:",options:["Cost","Satisfaction","Income","Production"],ans:"Satisfaction"},
-        {q:"Marginal utility means:",options:["Total satisfaction","Extra satisfaction from one more unit","Production cost","Total output"],ans:"Extra satisfaction from one more unit"},
-        {q:"Law of diminishing marginal utility states:",options:["MU rises continuously","MU falls with more consumption","Prices rise","Income falls"],ans:"MU falls with more consumption"},
-        {q:"Consumer equilibrium occurs where:",options:["MRS equals price ratio","Income equals savings","Exports equal imports","MU equals zero"],ans:"MRS equals price ratio"},
-        {q:"Revealed preference theory was developed by:",options:["Keynes","Samuelson","Ricardo","Marx"],ans:"Samuelson"},
-        {q:"Revealed preference theory studies:",options:["Actual consumer choices","Production","Inflation","Exports"],ans:"Actual consumer choices"},
-        {q:"Slutsky equation separates:",options:["Income and taxes","Substitution and income effects","Exports and imports","Labor and capital"],ans:"Substitution and income effects"},
-        {q:"Substitution effect occurs due to:",options:["Income change","Relative price change","Government policy","Exports"],ans:"Relative price change"},
-        {q:"Income effect occurs because price changes affect:",options:["Taxes","Purchasing power","Exports","Technology"],ans:"Purchasing power"},
-        {q:"Demand for normal goods:",options:["Falls with income","Rises with income","Never changes","Becomes zero"],ans:"Rises with income"},
-        {q:"Demand for inferior goods:",options:["Rises with income","Falls with income","Never changes","Becomes infinite"],ans:"Falls with income"},
-        {q:"Giffen goods violate:",options:["Law of supply","Law of demand","Law of utility","Law of production"],ans:"Law of demand"},
-        {q:"Endowment means:",options:["Initial ownership of goods","Taxes","Imports","Exports"],ans:"Initial ownership of goods"},
-        {q:"Intertemporal choice studies:",options:["Choices across time","Labor supply","Inflation","Production"],ans:"Choices across time"},
-        {q:"Savings increase:",options:["Future consumption","Imports","Taxes","Inflation"],ans:"Future consumption"},
-        {q:"Borrowing increases:",options:["Past consumption","Present consumption","Exports","Taxes"],ans:"Present consumption"},
-        {q:"Uncertainty means:",options:["Certain outcomes","Unknown future outcomes","Fixed prices","Fixed income"],ans:"Unknown future outcomes"},
-        {q:"Expected utility theory explains:",options:["Choices under uncertainty","Production","Exports","Government policy"],ans:"Choices under uncertainty"},
-        {q:"Risk-averse consumers prefer:",options:["Risky outcomes","Certainty","Losses","No consumption"],ans:"Certainty"},
-        {q:"Production function shows relation between:",options:["Inputs and output","Exports and imports","Income and taxes","Money and inflation"],ans:"Inputs and output"},
-        {q:"Short run production has:",options:["All variable inputs","At least one fixed input","No inputs","Unlimited inputs"],ans:"At least one fixed input"},
-        {q:"Marginal product means:",options:["Total output","Extra output from extra input","Average output","Fixed cost"],ans:"Extra output from extra input"},
-        {q:"Law of diminishing returns states:",options:["Marginal product eventually falls","Output always rises","Prices always rise","Income always rises"],ans:"Marginal product eventually falls"}
+    { q: "What is GDP?", options: ["Total goods produced","National income","Gov spending","Exports"], ans: "Total goods produced" },
+    { q: "Inflation means?", options: ["Rise in prices","Fall in prices","Stable","No change"], ans: "Rise in prices" },
+    { q: "Who controls money supply?", options: ["Gov","Central Bank","Firms","People"], ans: "Central Bank" },
+    { q: "Fiscal policy refers to?", options: ["Interest rates","Gov spending","Trade","Population"], ans: "Gov spending" },
+    { q: "Unemployment means?", options: ["No jobs","People without jobs","Low wages","Retired"], ans: "People without jobs" },
+    { q: "Demand increases when?", options: ["Price rises","Income rises","Supply rises","Tax rises"], ans: "Income rises" },
+    { q: "Law of supply states?", options: ["Inverse relation","Direct relation","No relation","Random"], ans: "Direct relation" },
+    { q: "Opportunity cost is?", options: ["Next best alternative","Money cost","Loss","Production cost"], ans: "Next best alternative" },
+    { q: "Microeconomics studies?", options: ["Whole economy","Individual units","Gov","Trade"], ans: "Individual units" },
+    { q: "Macroeconomics studies?", options: ["Firms","Markets","Entire economy","Consumers"], ans: "Entire economy" },
+    { q: "What is GDP?", options: ["Total goods produced","National income","Gov spending","Exports"], ans: "Total goods produced" },
+    { q: "Inflation means?", options: ["Rise in prices","Fall in prices","Stable","No change"], ans: "Rise in prices" },
+    { q: "Who controls money supply?", options: ["Gov","Central Bank","Firms","People"], ans: "Central Bank" },
+    { q: "Fiscal policy refers to?", options: ["Interest rates","Gov spending","Trade","Population"], ans: "Gov spending" },
+    { q: "Unemployment means?", options: ["No jobs","People without jobs","Low wages","Retired"], ans: "People without jobs" },
+    { q: "Demand increases when?", options: ["Price rises","Income rises","Supply rises","Tax rises"], ans: "Income rises" },
+    { q: "Law of supply states?", options: ["Inverse relation","Direct relation","No relation","Random"], ans: "Direct relation" },
+    { q: "Opportunity cost is?", options: ["Next best alternative","Money cost","Loss","Production cost"], ans: "Next best alternative" },
+    { q: "Microeconomics studies?", options: ["Whole economy","Individual units","Gov","Trade"], ans: "Individual units" },
+    { q: "Macroeconomics studies?", options: ["Firms","Markets","Entire economy","Consumers"], ans: "Entire economy" },
+    { q: "What is GDP?", options: ["Total goods produced","National income","Gov spending","Exports"], ans: "Total goods produced" },
+    { q: "Inflation means?", options: ["Rise in prices","Fall in prices","Stable","No change"], ans: "Rise in prices" },
+    { q: "Who controls money supply?", options: ["Gov","Central Bank","Firms","People"], ans: "Central Bank" },
+    { q: "Fiscal policy refers to?", options: ["Interest rates","Gov spending","Trade","Population"], ans: "Gov spending" },
+    { q: "Unemployment means?", options: ["No jobs","People without jobs","Low wages","Retired"], ans: "People without jobs" },
+    { q: "Demand increases when?", options: ["Price rises","Income rises","Supply rises","Tax rises"], ans: "Income rises" },
+    { q: "Law of supply states?", options: ["Inverse relation","Direct relation","No relation","Random"], ans: "Direct relation" },
+    { q: "Opportunity cost is?", options: ["Next best alternative","Money cost","Loss","Production cost"], ans: "Next best alternative" },
+    { q: "Microeconomics studies?", options: ["Whole economy","Individual units","Gov","Trade"], ans: "Individual units" },
+    { q: "Macroeconomics studies?", options: ["Firms","Markets","Entire economy","Consumers"], ans: "Entire economy" }
 ];
 
 let current = 0;
 let selectedAnswers = new Array(questions.length).fill(null);
+const storageKey = "microtheoryquiz";
+const legacyProgressKey = "theoryProgress";
 
-// 🔥 LOAD SAVED STATE
-let savedIndex = localStorage.getItem("theoryCurrent");
-let savedAnswers = JSON.parse(localStorage.getItem("theoryAnswers"));
+let savedIndex = localStorage.getItem(storageKey + "Current");
+let savedAnswers = JSON.parse(localStorage.getItem(storageKey + "Answers"));
 
-if (savedAnswers) selectedAnswers = savedAnswers;
+if (savedAnswers && savedAnswers.length === questions.length) selectedAnswers = savedAnswers;
 
 if (savedIndex !== null) {
     current = Math.min(parseInt(savedIndex), questions.length - 1);
 }
 
-// ELEMENTS
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const answerEl = document.getElementById("answer");
 const progressEl = document.getElementById("progress");
 const card = document.getElementById("card");
+const navEl = document.querySelector(".nav");
+const nextBtn = document.querySelector(".next");
+const prevBtn = document.querySelector(".prev");
+
+function getScore() {
+    return selectedAnswers.reduce((score, answer, index) => {
+        return answer === questions[index].ans ? score + 1 : score;
+    }, 0);
+}
+
+function saveProgress() {
+    const attempted = selectedAnswers.filter(answer => answer !== null).length;
+    localStorage.setItem(storageKey + "Progress", attempted);
+    localStorage.setItem(legacyProgressKey, attempted);
+    localStorage.setItem(storageKey + "Current", current);
+    localStorage.setItem(storageKey + "Answers", JSON.stringify(selectedAnswers));
+}
 
 function loadQuestion() {
     const q = questions[current];
+    const selected = selectedAnswers[current];
 
     questionEl.innerText = q.q;
     answerEl.innerText = "Answer: " + q.ans;
-    progressEl.innerText = `Question ${current + 1}/30`;
+    progressEl.innerText = "Question " + (current + 1) + "/" + questions.length;
+    nextBtn.innerText = current === questions.length - 1 ? "Finish" : "Next";
+    prevBtn.style.visibility = current === 0 ? "hidden" : "visible";
+    navEl.classList.remove("results-nav");
 
     optionsEl.innerHTML = "";
 
@@ -190,24 +121,15 @@ function loadQuestion() {
         div.className = "option";
         div.innerText = opt;
 
-        if (selectedAnswers[current] === opt) {
-            div.style.background = "#2563eb";
-            div.style.color = "white";
+        if (selected !== null) {
+            if (opt === q.ans) div.classList.add("correct");
+            if (opt === selected && selected !== q.ans) div.classList.add("wrong");
         }
 
         div.onclick = (e) => {
             e.stopPropagation();
-
             selectedAnswers[current] = opt;
-
-            // SAVE PROGRESS COUNT
-            const attempted = selectedAnswers.filter(a => a !== null).length;
-            localStorage.setItem("theoryProgress", attempted);
-
-            // 🔥 SAVE STATE
-            localStorage.setItem("theoryCurrent", current + 1);
-            localStorage.setItem("theoryAnswers", JSON.stringify(selectedAnswers));
-
+            saveProgress();
             loadQuestion();
         };
 
@@ -217,22 +139,65 @@ function loadQuestion() {
     card.classList.remove("flip");
 }
 
-// FLIP
+function showResults() {
+    const correct = getScore();
+    const wrong = questions.length - correct;
+    const percent = Math.round((correct / questions.length) * 100);
+
+    progressEl.innerText = "Quiz Complete";
+    card.classList.remove("flip");
+    card.innerHTML = [
+        '<div class="result-card">',
+        '<p class="result-label">Final Score</p>',
+        '<h2>' + correct + '/' + questions.length + ' correct</h2>',
+        '<div class="score-grid">',
+        '<div class="score-pill correct-score"><strong>' + correct + '</strong><span>Correct</span></div>',
+        '<div class="score-pill wrong-score"><strong>' + wrong + '</strong><span>Wrong</span></div>',
+        '<div class="score-pill percent-score"><strong>' + percent + '%</strong><span>Score</span></div>',
+        '</div>',
+        '</div>'
+    ].join('');
+    navEl.classList.add("results-nav");
+    prevBtn.style.visibility = "visible";
+    prevBtn.innerText = "Review Quiz";
+    nextBtn.innerText = "Try Again";
+}
+
 card.addEventListener("click", () => {
-    card.classList.toggle("flip");
+    if (card.querySelector(".card-inner")) {
+        card.classList.toggle("flip");
+    }
 });
 
-// NAV
 function nextQ() {
+    if (card.querySelector(".result-card")) {
+        current = 0;
+        selectedAnswers = new Array(questions.length).fill(null);
+        saveProgress();
+        window.location.reload();
+        return;
+    }
+
     if (current < questions.length - 1) {
         current++;
+        saveProgress();
         loadQuestion();
+    } else {
+        showResults();
     }
 }
 
 function prevQ() {
+    if (card.querySelector(".result-card")) {
+        current = 0;
+        saveProgress();
+        window.location.reload();
+        return;
+    }
+
     if (current > 0) {
         current--;
+        saveProgress();
         loadQuestion();
     }
 }
@@ -241,7 +206,6 @@ function goBack() {
     window.location.href = "microeconomics.html";
 }
 
-// INIT
 loadQuestion();
 </script>
 
