@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,103 +7,13 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-<style>
-body {
-    font-family: 'Inter', sans-serif;
-    background: #f4f7ff;
-    margin: 0;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* HEADER */
-.top {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.back {
-    cursor: pointer;
-    color: #2563eb;
-}
-
-/* CARD */
-.card {
-    width: 100%;
-    max-width: 600px;
-    perspective: 1000px;
-    margin-bottom: 30px;
-    cursor: pointer;
-}
-
-.card-inner {
-    display: grid;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-}
-
-.card-front,
-.card-back {
-    grid-area: 1 / 1;
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    backface-visibility: hidden;
-}
-
-.card-back {
-    transform: rotateY(180deg);
-    background: #111827;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.card.flip .card-inner {
-    transform: rotateY(180deg);
-}
-
-/* OPTIONS */
-.option {
-    background: #f3f4f6;
-    padding: 10px;
-    border-radius: 8px;
-    margin-top: 10px;
-    cursor: pointer;
-}
-
-/* NAV */
-.nav {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    justify-content: space-between;
-}
-
-button {
-    padding: 10px 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.prev { background: #e5e7eb; }
-.next { background: #6b7280; color: white; }
-</style>
+<link rel="stylesheet" href="dev-quiz.css">
 </head>
 
 <body>
 
 <div class="top">
-    <div class="back" onclick="goBack()">← Back</div>
+    <div class="back" onclick="goBack()">â† Back</div>
     <div id="progress">Question 1/10</div>
 </div>
 
@@ -143,45 +53,56 @@ const questions = [
     {q:"Harrod-Domar model emphasizes:",options:["Savings and investment","Population control","Exports","Government taxes"],ans:"Savings and investment"},
     {q:"Solow growth model highlights the role of:",options:["Technology","Military power","Imports","Weather"],ans:"Technology"},
     {q:"Balanced growth means:",options:["Equal growth of all sectors","Growth only in agriculture","Decline in GDP","Increase in imports"],ans:"Equal growth of all sectors"},
-    {q:"Inflation means:",options:["Fall in prices","Rise in prices","Stable economy","Reduction in GDP"],ans:"Rise in prices"},
-    {q:"Per capita income means:",options:["Total national income","Income per person","Government revenue","Export earnings"],ans:"Income per person"},
-    {q:"Vicious circle of poverty means:",options:["Rapid industrial growth","Poverty leading to more poverty","Export growth","Population decline"],ans:"Poverty leading to more poverty"},
-    {q:"Big Push theory was proposed by:",options:["Rosenstein-Rodan","Keynes","Ricardo","Marshall"],ans:"Rosenstein-Rodan"},
-    {q:"Unbalanced growth theory is associated with:",options:["Hirschman","Adam Smith","Friedman","Marx"],ans:"Hirschman"},
-    {q:"Capability deprivation is related to:",options:["Amartya Sen","Milton Friedman","Ricardo","Pigou"],ans:"Amartya Sen"},
-    {q:"Structural transformation means:",options:["Shift from agriculture to industry and services","Population growth","Inflation increase","Tax reduction"],ans:"Shift from agriculture to industry and services"},
-    {q:"Dual economy model explains:",options:["Two political systems","Traditional and modern sectors","Two currencies","Export-import balance"],ans:"Traditional and modern sectors"},
-    {q:"Disguised unemployment is common in:",options:["Agriculture","Banking","IT sector","Tourism"],ans:"Agriculture"},
-    {q:"Lorenz curve measures:",options:["Economic growth","Income inequality","Population","Exports"],ans:"Income inequality"},
-    {q:"Low level equilibrium trap is associated with:",options:["Nurkse","Keynes","Samuelson","Fisher"],ans:"Nurkse"}
+    {q:"Inflation means:",options:["Fall in prices","Rise in prices","Stable economy","Reduction in GDP"],ans:"Rise in prices"}
 ];
 
 let current = 0;
 let selectedAnswers = new Array(questions.length).fill(null);
+const storageKey = "devquiz";
+const legacyProgressKey = "theoryProgress";
 
-// 🔥 LOAD SAVED STATE
-let savedIndex = localStorage.getItem("theoryCurrent");
-let savedAnswers = JSON.parse(localStorage.getItem("theoryAnswers"));
+let savedIndex = localStorage.getItem(storageKey + "Current");
+let savedAnswers = JSON.parse(localStorage.getItem(storageKey + "Answers"));
 
-if (savedAnswers) selectedAnswers = savedAnswers;
+if (savedAnswers && savedAnswers.length === questions.length) selectedAnswers = savedAnswers;
 
 if (savedIndex !== null) {
     current = Math.min(parseInt(savedIndex), questions.length - 1);
 }
 
-// ELEMENTS
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const answerEl = document.getElementById("answer");
 const progressEl = document.getElementById("progress");
 const card = document.getElementById("card");
+const navEl = document.querySelector(".nav");
+const nextBtn = document.querySelector(".next");
+const prevBtn = document.querySelector(".prev");
+
+function getScore() {
+    return selectedAnswers.reduce((score, answer, index) => {
+        return answer === questions[index].ans ? score + 1 : score;
+    }, 0);
+}
+
+function saveProgress() {
+    const attempted = selectedAnswers.filter(answer => answer !== null).length;
+    localStorage.setItem(storageKey + "Progress", attempted);
+    localStorage.setItem(legacyProgressKey, attempted);
+    localStorage.setItem(storageKey + "Current", current);
+    localStorage.setItem(storageKey + "Answers", JSON.stringify(selectedAnswers));
+}
 
 function loadQuestion() {
     const q = questions[current];
+    const selected = selectedAnswers[current];
 
     questionEl.innerText = q.q;
     answerEl.innerText = "Answer: " + q.ans;
-    progressEl.innerText = `Question ${current + 1}/30`;
+    progressEl.innerText = "Question " + (current + 1) + "/" + questions.length;
+    nextBtn.innerText = current === questions.length - 1 ? "Finish" : "Next";
+    prevBtn.style.visibility = current === 0 ? "hidden" : "visible";
+    navEl.classList.remove("results-nav");
 
     optionsEl.innerHTML = "";
 
@@ -190,24 +111,15 @@ function loadQuestion() {
         div.className = "option";
         div.innerText = opt;
 
-        if (selectedAnswers[current] === opt) {
-            div.style.background = "#2563eb";
-            div.style.color = "white";
+        if (selected !== null) {
+            if (opt === q.ans) div.classList.add("correct");
+            if (opt === selected && selected !== q.ans) div.classList.add("wrong");
         }
 
         div.onclick = (e) => {
             e.stopPropagation();
-
             selectedAnswers[current] = opt;
-
-            // SAVE PROGRESS COUNT
-            const attempted = selectedAnswers.filter(a => a !== null).length;
-            localStorage.setItem("theoryProgress", attempted);
-
-            // 🔥 SAVE STATE
-            localStorage.setItem("theoryCurrent", current + 1);
-            localStorage.setItem("theoryAnswers", JSON.stringify(selectedAnswers));
-
+            saveProgress();
             loadQuestion();
         };
 
@@ -217,22 +129,65 @@ function loadQuestion() {
     card.classList.remove("flip");
 }
 
-// FLIP
+function showResults() {
+    const correct = getScore();
+    const wrong = questions.length - correct;
+    const percent = Math.round((correct / questions.length) * 100);
+
+    progressEl.innerText = "Quiz Complete";
+    card.classList.remove("flip");
+    card.innerHTML = [
+        '<div class="result-card">',
+        '<p class="result-label">Final Score</p>',
+        '<h2>' + correct + '/' + questions.length + ' correct</h2>',
+        '<div class="score-grid">',
+        '<div class="score-pill correct-score"><strong>' + correct + '</strong><span>Correct</span></div>',
+        '<div class="score-pill wrong-score"><strong>' + wrong + '</strong><span>Wrong</span></div>',
+        '<div class="score-pill percent-score"><strong>' + percent + '%</strong><span>Score</span></div>',
+        '</div>',
+        '</div>'
+    ].join('');
+    navEl.classList.add("results-nav");
+    prevBtn.style.visibility = "visible";
+    prevBtn.innerText = "Review Quiz";
+    nextBtn.innerText = "Try Again";
+}
+
 card.addEventListener("click", () => {
-    card.classList.toggle("flip");
+    if (card.querySelector(".card-inner")) {
+        card.classList.toggle("flip");
+    }
 });
 
-// NAV
 function nextQ() {
+    if (card.querySelector(".result-card")) {
+        current = 0;
+        selectedAnswers = new Array(questions.length).fill(null);
+        saveProgress();
+        window.location.reload();
+        return;
+    }
+
     if (current < questions.length - 1) {
         current++;
+        saveProgress();
         loadQuestion();
+    } else {
+        showResults();
     }
 }
 
 function prevQ() {
+    if (card.querySelector(".result-card")) {
+        current = 0;
+        saveProgress();
+        window.location.reload();
+        return;
+    }
+
     if (current > 0) {
         current--;
+        saveProgress();
         loadQuestion();
     }
 }
@@ -241,7 +196,6 @@ function goBack() {
     window.location.href = "development.html";
 }
 
-// INIT
 loadQuestion();
 </script>
 

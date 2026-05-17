@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,103 +7,13 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-<style>
-body {
-    font-family: 'Inter', sans-serif;
-    background: #f4f7ff;
-    margin: 0;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* HEADER */
-.top {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.back {
-    cursor: pointer;
-    color: #2563eb;
-}
-
-/* CARD */
-.card {
-    width: 100%;
-    max-width: 600px;
-    perspective: 1000px;
-    margin-bottom: 30px;
-    cursor: pointer;
-}
-
-.card-inner {
-    display: grid;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-}
-
-.card-front,
-.card-back {
-    grid-area: 1 / 1;
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    backface-visibility: hidden;
-}
-
-.card-back {
-    transform: rotateY(180deg);
-    background: #111827;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.card.flip .card-inner {
-    transform: rotateY(180deg);
-}
-
-/* OPTIONS */
-.option {
-    background: #f3f4f6;
-    padding: 10px;
-    border-radius: 8px;
-    margin-top: 10px;
-    cursor: pointer;
-}
-
-/* NAV */
-.nav {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    justify-content: space-between;
-}
-
-button {
-    padding: 10px 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.prev { background: #e5e7eb; }
-.next { background: #6b7280; color: white; }
-</style>
+<link rel="stylesheet" href="macro-graphs-quiz.css">
 </head>
 
 <body>
 
 <div class="top">
-    <div class="back" onclick="goBack()">← Back</div>
+    <div class="back" onclick="goBack()">â† Back</div>
     <div id="progress">Question 1/30</div>
 </div>
 
@@ -124,64 +34,85 @@ button {
 
 <script>
 const questions = [
-    {q:"Classical economists believed economy is:",options:["Unstable","Self-adjusting","Government-controlled","Closed"],ans:"Self-adjusting"},
-    {q:"Say’s Law states:",options:["Demand creates supply","Supply creates its own demand","Money creates inflation","Taxes create demand"],ans:"Supply creates its own demand"},
-    {q:"Keynesian economics emphasizes:",options:["Aggregate demand","Aggregate supply","Exports","Imports"],ans:"Aggregate demand"},
-    {q:"Keynes believed unemployment occurs due to:",options:["High wages","Insufficient demand","Low taxes","Exports"],ans:"Insufficient demand"},
-    {q:"Monetarism was mainly developed by:",options:["Keynes","Milton Friedman","Adam Smith","Ricardo"],ans:"Milton Friedman"},
-    {q:"Monetarists believe inflation is mainly caused by:",options:["Low exports","Excess money supply","Imports","Taxes"],ans:"Excess money supply"},
-    {q:"New classical economics emphasizes:",options:["Sticky prices","Rational expectations","Government control","Barter"],ans:"Rational expectations"},
-    {q:"Rational expectations means people use:",options:["Random guesses","Past data only","All available information","Government orders"],ans:"All available information"},
-    {q:"New Keynesian economics focuses on:",options:["Flexible prices","Sticky wages and prices","No unemployment","Perfect markets"],ans:"Sticky wages and prices"},
-    {q:"Efficiency wage theory suggests firms pay:",options:["Low wages","Equilibrium wages only","Higher wages for productivity","No wages"],ans:"Higher wages for productivity"},
-    {q:"Phillips Curve shows relation between:",options:["Inflation and unemployment","GDP and exports","Savings and taxes","Imports and exports"],ans:"Inflation and unemployment"},
-    {q:"Keynesian Phillips Curve suggests:",options:["No trade-off","Stable trade-off","Vertical curve","Horizontal curve"],ans:"Stable trade-off"},
-    {q:"Monetarists argued long-run Phillips Curve is:",options:["Horizontal","Vertical","Downward","Circular"],ans:"Vertical"},
-    {q:"Natural rate of unemployment includes:",options:["Frictional and structural unemployment","Only cyclical unemployment","No unemployment","Seasonal unemployment only"],ans:"Frictional and structural unemployment"},
-    {q:"New classical economists believe policies are:",options:["Always effective","Mostly ineffective if anticipated","Useful only in agriculture","Irrelevant"],ans:"Mostly ineffective if anticipated"},
-    {q:"Sticky prices mean prices:",options:["Change instantly","Adjust slowly","Never change","Rise continuously"],ans:"Adjust slowly"},
-    {q:"Sticky wages can create:",options:["Inflation only","Unemployment","Exports","Imports"],ans:"Unemployment"},
-    {q:"Post Keynesian economists emphasize:",options:["Uncertainty","Perfect competition","No government","Barter"],ans:"Uncertainty"},
-    {q:"Post Keynesians believe money is:",options:["Exogenous only","Endogenous","Useless","Fixed"],ans:"Endogenous"},
-    {q:"Labor demand comes from:",options:["Government","Demand for goods","Exports","Imports"],ans:"Demand for goods"},
-    {q:"Labor supply depends mainly on:",options:["Wages","Exports","Imports","Technology"],ans:"Wages"},
-    {q:"Labor market equilibrium occurs where:",options:["Inflation equals unemployment","Labor demand equals labor supply","GDP equals GNP","Exports equal imports"],ans:"Labor demand equals labor supply"},
-    {q:"Real wage measures:",options:["Money supply","Purchasing power of wages","Exports","Taxes"],ans:"Purchasing power of wages"},
-    {q:"Adaptive expectations are based on:",options:["Future guesses","Past experiences","Government policy only","Exports"],ans:"Past experiences"},
-    {q:"Keynesian economics supports:",options:["No government intervention","Government intervention","Only exports","Only imports"],ans:"Government intervention"},
-    {q:"Multiplier effect means:",options:["Prices rise continuously","Income rises by larger amount","Taxes increase","Imports increase"],ans:"Income rises by larger amount"},
-    {q:"Quantity theory of money links money supply with:",options:["Inflation","Exports","Agriculture","Population"],ans:"Inflation"},
-    {q:"Fiscal policy mainly uses:",options:["Taxes and government spending","Imports","Exports","Wages"],ans:"Taxes and government spending"},
-    {q:"Monetary policy mainly controls:",options:["Population","Money supply and interest rates","Exports","Agriculture"],ans:"Money supply and interest rates"},
-    {q:"New Keynesian Phillips Curve includes:",options:["Sticky prices and expectations","Only exports","Only labor supply","Only taxes"],ans:"Sticky prices and expectations"}
+    { q: "Slope of demand curve?", options: ["Positive","Negative","Zero","Infinite"], ans: "Negative" },
+    { q: "Slope of supply curve?", options: ["Negative","Positive","Zero","None"], ans: "Positive" },
+    { q: "Equilibrium occurs where?", options: ["Demand only","Supply only","Intersection","None"], ans: "Intersection" },
+    { q: "Rightward shift in demand?", options: ["Decrease","Increase","No change","Fall"], ans: "Increase" },
+    { q: "Leftward shift in supply?", options: ["Increase","Decrease","No change","Rise"], ans: "Decrease" },
+    { q: "X-axis shows?", options: ["Price","Quantity","Demand","Supply"], ans: "Quantity" },
+    { q: "Y-axis shows?", options: ["Quantity","Price","Demand","Supply"], ans: "Price" },
+    { q: "Elastic demand?", options: ["Less responsive","Highly responsive","Zero","Constant"], ans: "Highly responsive" },
+    { q: "Inelastic demand?", options: ["Highly responsive","Less responsive","Infinite","Zero"], ans: "Less responsive" },
+    { q: "Parallel shift means?", options: ["Movement","Shift","Equilibrium","None"], ans: "Shift" },
+    { q: "Slope of demand curve?", options: ["Positive","Negative","Zero","Infinite"], ans: "Negative" },
+    { q: "Slope of supply curve?", options: ["Negative","Positive","Zero","None"], ans: "Positive" },
+    { q: "Equilibrium occurs where?", options: ["Demand only","Supply only","Intersection","None"], ans: "Intersection" },
+    { q: "Rightward shift in demand?", options: ["Decrease","Increase","No change","Fall"], ans: "Increase" },
+    { q: "Leftward shift in supply?", options: ["Increase","Decrease","No change","Rise"], ans: "Decrease" },
+    { q: "X-axis shows?", options: ["Price","Quantity","Demand","Supply"], ans: "Quantity" },
+    { q: "Y-axis shows?", options: ["Quantity","Price","Demand","Supply"], ans: "Price" },
+    { q: "Elastic demand?", options: ["Less responsive","Highly responsive","Zero","Constant"], ans: "Highly responsive" },
+    { q: "Inelastic demand?", options: ["Highly responsive","Less responsive","Infinite","Zero"], ans: "Less responsive" },
+    { q: "Parallel shift means?", options: ["Movement","Shift","Equilibrium","None"], ans: "Shift" },
+    { q: "Slope of demand curve?", options: ["Positive","Negative","Zero","Infinite"], ans: "Negative" },
+    { q: "Slope of supply curve?", options: ["Negative","Positive","Zero","None"], ans: "Positive" },
+    { q: "Equilibrium occurs where?", options: ["Demand only","Supply only","Intersection","None"], ans: "Intersection" },
+    { q: "Rightward shift in demand?", options: ["Decrease","Increase","No change","Fall"], ans: "Increase" },
+    { q: "Leftward shift in supply?", options: ["Increase","Decrease","No change","Rise"], ans: "Decrease" },
+    { q: "X-axis shows?", options: ["Price","Quantity","Demand","Supply"], ans: "Quantity" },
+    { q: "Y-axis shows?", options: ["Quantity","Price","Demand","Supply"], ans: "Price" },
+    { q: "Elastic demand?", options: ["Less responsive","Highly responsive","Zero","Constant"], ans: "Highly responsive" },
+    { q: "Inelastic demand?", options: ["Highly responsive","Less responsive","Infinite","Zero"], ans: "Less responsive" },
+    { q: "Parallel shift means?", options: ["Movement","Shift","Equilibrium","None"], ans: "Shift" }
 ];
 
 let current = 0;
 let selectedAnswers = new Array(questions.length).fill(null);
+const storageKey = "macrographsquiz";
+const legacyProgressKey = "graphsProgress";
 
-// 🔥 LOAD SAVED STATE
-let savedIndex = localStorage.getItem("graphsCurrent");
-let savedAnswers = JSON.parse(localStorage.getItem("graphsAnswers"));
+let savedIndex = localStorage.getItem(storageKey + "Current");
+let savedAnswers = JSON.parse(localStorage.getItem(storageKey + "Answers"));
 
-if (savedAnswers) selectedAnswers = savedAnswers;
+if (savedAnswers && savedAnswers.length === questions.length) selectedAnswers = savedAnswers;
 
 if (savedIndex !== null) {
     current = Math.min(parseInt(savedIndex), questions.length - 1);
 }
 
-// ELEMENTS
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const answerEl = document.getElementById("answer");
 const progressEl = document.getElementById("progress");
 const card = document.getElementById("card");
+const navEl = document.querySelector(".nav");
+const nextBtn = document.querySelector(".next");
+const prevBtn = document.querySelector(".prev");
+
+function getScore() {
+    return selectedAnswers.reduce((score, answer, index) => {
+        return answer === questions[index].ans ? score + 1 : score;
+    }, 0);
+}
+
+function saveProgress() {
+    const attempted = selectedAnswers.filter(answer => answer !== null).length;
+    localStorage.setItem(storageKey + "Progress", attempted);
+    localStorage.setItem(legacyProgressKey, attempted);
+    localStorage.setItem(storageKey + "Current", current);
+    localStorage.setItem(storageKey + "Answers", JSON.stringify(selectedAnswers));
+}
 
 function loadQuestion() {
     const q = questions[current];
+    const selected = selectedAnswers[current];
 
     questionEl.innerText = q.q;
     answerEl.innerText = "Answer: " + q.ans;
-    progressEl.innerText = `Question ${current + 1}/30`;
+    progressEl.innerText = "Question " + (current + 1) + "/" + questions.length;
+    nextBtn.innerText = current === questions.length - 1 ? "Finish" : "Next";
+    prevBtn.style.visibility = current === 0 ? "hidden" : "visible";
+    navEl.classList.remove("results-nav");
 
     optionsEl.innerHTML = "";
 
@@ -190,24 +121,15 @@ function loadQuestion() {
         div.className = "option";
         div.innerText = opt;
 
-        if (selectedAnswers[current] === opt) {
-            div.style.background = "#2563eb";
-            div.style.color = "white";
+        if (selected !== null) {
+            if (opt === q.ans) div.classList.add("correct");
+            if (opt === selected && selected !== q.ans) div.classList.add("wrong");
         }
 
         div.onclick = (e) => {
             e.stopPropagation();
-
             selectedAnswers[current] = opt;
-
-            // SAVE PROGRESS COUNT
-            const attempted = selectedAnswers.filter(a => a !== null).length;
-            localStorage.setItem("graphsProgress", attempted);
-
-            // 🔥 SAVE STATE
-            localStorage.setItem("graphsCurrent", current + 1);
-            localStorage.setItem("graphsAnswers", JSON.stringify(selectedAnswers));
-
+            saveProgress();
             loadQuestion();
         };
 
@@ -217,22 +139,65 @@ function loadQuestion() {
     card.classList.remove("flip");
 }
 
-// FLIP
+function showResults() {
+    const correct = getScore();
+    const wrong = questions.length - correct;
+    const percent = Math.round((correct / questions.length) * 100);
+
+    progressEl.innerText = "Quiz Complete";
+    card.classList.remove("flip");
+    card.innerHTML = [
+        '<div class="result-card">',
+        '<p class="result-label">Final Score</p>',
+        '<h2>' + correct + '/' + questions.length + ' correct</h2>',
+        '<div class="score-grid">',
+        '<div class="score-pill correct-score"><strong>' + correct + '</strong><span>Correct</span></div>',
+        '<div class="score-pill wrong-score"><strong>' + wrong + '</strong><span>Wrong</span></div>',
+        '<div class="score-pill percent-score"><strong>' + percent + '%</strong><span>Score</span></div>',
+        '</div>',
+        '</div>'
+    ].join('');
+    navEl.classList.add("results-nav");
+    prevBtn.style.visibility = "visible";
+    prevBtn.innerText = "Review Quiz";
+    nextBtn.innerText = "Try Again";
+}
+
 card.addEventListener("click", () => {
-    card.classList.toggle("flip");
+    if (card.querySelector(".card-inner")) {
+        card.classList.toggle("flip");
+    }
 });
 
-// NAV
 function nextQ() {
+    if (card.querySelector(".result-card")) {
+        current = 0;
+        selectedAnswers = new Array(questions.length).fill(null);
+        saveProgress();
+        window.location.reload();
+        return;
+    }
+
     if (current < questions.length - 1) {
         current++;
+        saveProgress();
         loadQuestion();
+    } else {
+        showResults();
     }
 }
 
 function prevQ() {
+    if (card.querySelector(".result-card")) {
+        current = 0;
+        saveProgress();
+        window.location.reload();
+        return;
+    }
+
     if (current > 0) {
         current--;
+        saveProgress();
         loadQuestion();
     }
 }
@@ -241,7 +206,6 @@ function goBack() {
     window.location.href = "macroeconomics.html";
 }
 
-// INIT
 loadQuestion();
 </script>
 

@@ -1,0 +1,14 @@
+﻿@import url("theme.css");
+
+:root {
+    --accent: #0f766e;
+    --accent-2: #f59e0b;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+}
+
